@@ -29,14 +29,3 @@ describe MyRackApp do
     expect(last_response.status).to eq(404)
   end
 end
-
-
-
-# require 'rack'
-# require 'yaml'
-
-# app = Proc.new do |env|
-#     ['200', {'Content-Type' => 'text/html'}, ['A barebones rack app.', env.to_yaml]]
-# end
-
-# Rack::Handler::WEBrick.run app
