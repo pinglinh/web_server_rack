@@ -1,5 +1,3 @@
-require 'yaml'
-
 class MyRackApp
   def call(env)
     if env["PATH_INFO"] == '/'
