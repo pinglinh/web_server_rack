@@ -1,17 +1,21 @@
 class MyRackApp
   def call(env)
-    if env["PATH_INFO"] == '/'
-      ['200',
-      {'Content-Type' => 'text/html'},
-      ["Welcome"]]
-    elsif env["PATH_INFO"] == '/login'
-      ['200',
-      {'Content-Type' => 'text/html'},
-      ["Login"]]
+    case env["PATH_INFO"]
+    when '/'
+      response('200', 'Welcome')
+    when '/login'
+      response('200', "Login")
     else
-      ['404',
-      {'Content-Type' => 'text/html'},
-      ["Not found"]]
+      response('404', 'Not found')
     end
   end
+
+  def response(code, body)
+    [
+      code,
+      {'Content-Type' => 'text/html'},
+      [body]
+    ]
+  end
+
 end
