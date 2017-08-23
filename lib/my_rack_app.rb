@@ -50,7 +50,7 @@ class MyRackApp
     [
       code,
       {'Content-Type' => 'text/html'}.merge(headers),
-      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_haxsh(vars)]
+      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
     ]
   end
 
