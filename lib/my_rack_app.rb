@@ -37,6 +37,15 @@ class MyRackApp
           },
           {"Location" => "/dashboard"})
       end
+    when '/dashboard'
+      response(
+          '200',
+          {
+            page_title: "Dashboard",
+            header: "Dashboard",
+            content: "hello user"
+          },
+          {"Location" => "/dashboard"})
     else
       response(
         '404',
