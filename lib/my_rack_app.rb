@@ -4,7 +4,6 @@ require "pry"
 
 class MyRackApp
   def call(env)
-    # binding.pry
     case env["PATH_INFO"]
     when '/'
       response(
