@@ -19,6 +19,17 @@ class LoginController
       HTML
   end
 
+  def post
+    response(
+      '302',
+      {
+        page_title: "Dashboard",
+        header: "Dashboard",
+        content: "hello user"
+      },
+      {"Location" => "/dashboard"})
+  end
+
   def response(code, vars, headers = {})
     [
       code,
@@ -43,14 +54,7 @@ class MyRackApp
       if env["REQUEST_METHOD"] == "GET"
         login_controller.get
       else
-        response(
-          '302',
-          {
-            page_title: "Dashboard",
-            header: "Dashboard",
-            content: "hello user"
-          },
-          {"Location" => "/dashboard"})
+        login_controller.post
       end
     when '/dashboard'
       response(
