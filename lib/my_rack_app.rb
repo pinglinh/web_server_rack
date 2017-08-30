@@ -78,12 +78,30 @@ class DashboardController
   end
 end
 
+class ErrorController
+  def get
+    response(
+      '404',
+      {page_title: "Error Page",
+        header: "Error",
+        content: "error"})
+  end
+
+  def response(code, vars, headers = {})
+    [
+      code,
+      {'Content-Type' => 'text/html'}.merge(headers),
+      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
+    ]
+  end
+end
 
 class MyRackApp
   def call(env)
     login_controller = LoginController.new
     dashboard_controller = DashboardController.new
     welcome_controller = WelcomeController.new
+    error_controller = ErrorController.new
 
     case env["PATH_INFO"]
     when '/'
@@ -97,11 +115,7 @@ class MyRackApp
     when '/dashboard'
       dashboard_controller.get
     else
-      response(
-        '404',
-        {page_title: "Error Page",
-          header: "Error",
-          content: "error"})
+      error_controller.get
     end
   end
 
