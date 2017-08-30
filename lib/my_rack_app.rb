@@ -1,6 +1,4 @@
 require "erb"
-require "pp"
-require "pry"
 
 class WelcomeController
   def get
