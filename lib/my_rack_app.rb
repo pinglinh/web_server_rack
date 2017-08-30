@@ -29,6 +29,14 @@ class WelcomeController
 end
 
 class LoginController
+  def initialize(responder)
+    @responder = responder
+  end
+
+  def response(*args)
+    @responder.response(*args)
+  end
+
   def get
     response(
       '200',
@@ -55,17 +63,17 @@ class LoginController
       },
       {"Location" => "/dashboard"})
   end
-
-  def response(code, vars, headers = {})
-    [
-      code,
-      {'Content-Type' => 'text/html'}.merge(headers),
-      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
-    ]
-  end
 end
 
 class DashboardController
+  def initialize(responder)
+    @responder = responder
+  end
+
+  def response(*args)
+    @responder.response(*args)
+  end
+
   def get
     response(
       '200',
@@ -76,17 +84,17 @@ class DashboardController
       },
       {"Location" => "/dashboard"})
   end
-
-  def response(code, vars, headers = {})
-    [
-      code,
-      {'Content-Type' => 'text/html'}.merge(headers),
-      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
-    ]
-  end
 end
 
 class ErrorController
+  def initialize(responder)
+    @responder = responder
+  end
+
+  def response(*args)
+    @responder.response(*args)
+  end
+
   def get
     response(
       '404',
@@ -94,23 +102,15 @@ class ErrorController
         header: "Error",
         content: "error"})
   end
-
-  def response(code, vars, headers = {})
-    [
-      code,
-      {'Content-Type' => 'text/html'}.merge(headers),
-      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
-    ]
-  end
 end
 
 class MyRackApp
   def call(env)
     responder = Responder.new
-    login_controller = LoginController.new
-    dashboard_controller = DashboardController.new
+    login_controller = LoginController.new(responder)
+    dashboard_controller = DashboardController.new(responder)
     welcome_controller = WelcomeController.new(responder)
-    error_controller = ErrorController.new
+    error_controller = ErrorController.new(responder)
 
     case env["PATH_INFO"]
     when '/'
