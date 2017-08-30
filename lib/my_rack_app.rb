@@ -2,6 +2,24 @@ require "erb"
 require "pp"
 require "pry"
 
+class WelcomeController
+  def get
+    response(
+      '200',
+      {page_title: "Welcome Page",
+        header: "Welcome",
+        content: "button"})
+  end
+
+  def response(code, vars, headers = {})
+    [
+      code,
+      {'Content-Type' => 'text/html'}.merge(headers),
+      [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
+    ]
+  end
+end
+
 class LoginController
   def get
     response(
@@ -65,14 +83,11 @@ class MyRackApp
   def call(env)
     login_controller = LoginController.new
     dashboard_controller = DashboardController.new
+    welcome_controller = WelcomeController.new
 
     case env["PATH_INFO"]
     when '/'
-      response(
-        '200',
-        {page_title: "Welcome Page",
-          header: "Welcome",
-          content: "button"})
+      welcome_controller.get
     when '/login'
       if env["REQUEST_METHOD"] == "GET"
         login_controller.get
