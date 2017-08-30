@@ -30,15 +30,7 @@ class WelcomeController < BaseController
   end
 end
 
-class LoginController
-  def initialize(responder)
-    @responder = responder
-  end
-
-  def response(*args)
-    @responder.response(*args)
-  end
-
+class LoginController < BaseController
   def get
     response(
       '200',
@@ -67,15 +59,7 @@ class LoginController
   end
 end
 
-class DashboardController
-  def initialize(responder)
-    @responder = responder
-  end
-
-  def response(*args)
-    @responder.response(*args)
-  end
-
+class DashboardController < BaseController
   def get
     response(
       '200',
@@ -88,15 +72,7 @@ class DashboardController
   end
 end
 
-class ErrorController
-  def initialize(responder)
-    @responder = responder
-  end
-
-  def response(*args)
-    @responder.response(*args)
-  end
-
+class ErrorController < BaseController
   def get
     response(
       '404',
