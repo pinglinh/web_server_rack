@@ -10,7 +10,7 @@ class Responder
   end
 end
 
-class WelcomeController
+class BaseController
   def initialize(responder)
     @responder = responder
   end
@@ -18,7 +18,9 @@ class WelcomeController
   def response(*args)
     @responder.response(*args)
   end
+end
 
+class WelcomeController < BaseController
   def get
     response(
       '200',
