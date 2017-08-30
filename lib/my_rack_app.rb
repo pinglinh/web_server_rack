@@ -1,20 +1,30 @@
 require "erb"
 
-class WelcomeController
-  def get
-    response(
-      '200',
-      {page_title: "Welcome Page",
-        header: "Welcome",
-        content: "button"})
-  end
-
+class Responder
   def response(code, vars, headers = {})
     [
       code,
       {'Content-Type' => 'text/html'}.merge(headers),
       [ERB.new(File.read(__dir__ + "/../views/layout.erb")).result_with_hash(vars)]
     ]
+  end
+end
+
+class WelcomeController
+  def initialize(responder)
+    @responder = responder
+  end
+
+  def response(*args)
+    @responder.response(*args)
+  end
+
+  def get
+    response(
+      '200',
+      {page_title: "Welcome Page",
+        header: "Welcome",
+        content: "button"})
   end
 end
 
@@ -96,9 +106,10 @@ end
 
 class MyRackApp
   def call(env)
+    responder = Responder.new
     login_controller = LoginController.new
     dashboard_controller = DashboardController.new
-    welcome_controller = WelcomeController.new
+    welcome_controller = WelcomeController.new(responder)
     error_controller = ErrorController.new
 
     case env["PATH_INFO"]
