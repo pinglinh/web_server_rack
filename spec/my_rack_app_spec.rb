@@ -21,7 +21,15 @@ describe MyRackApp do
     end
   end
 
-  describe "/login" do
+  describe "signing up" do
+    it "renders the signup page" do
+      get "/signup"
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Sign up")
+    end
+  end
+
+  describe "logging in" do
     it "renders the login page at /login" do
       get '/login'
       expect(last_response.status).to eq(200)
@@ -31,10 +39,7 @@ describe MyRackApp do
     context "when the user posts correct credentials" do
       it "takes the user to the dashboard" do
         post('/login', "username" => "hello@gmail.com", "password" => "hello1")
-        # expect(last_response.status).to eq(302)
-        # expect(last_response.location).to eq("/dashboard")
         follow_redirect!
-
         expect(last_response.body).to include("hello user")
       end
     end
@@ -44,7 +49,6 @@ describe MyRackApp do
 
     end
   end
-
 
   it "return 404 when we go to any other page" do
     get '/fjdl'
