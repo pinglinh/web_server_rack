@@ -21,13 +21,13 @@ describe MyRackApp do
     end
   end
 
-  describe "signing up" do
-    it "renders the signup page" do
-      get "/signup"
-      expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("Sign up")
-    end
-  end
+  # describe "signing up" do
+  #   it "renders the signup page" do
+  #     get "/signup"
+  #     expect(last_response.status).to eq(200)
+  #     expect(last_response.body).to include("Sign up")
+  #   end
+  # end
 
   describe "logging in" do
     it "renders the login page at /login" do
