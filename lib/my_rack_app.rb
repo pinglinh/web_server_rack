@@ -66,8 +66,24 @@ class SignupController < BaseController
       {
         page_title: "Signup",
         header: "Signup",
-        content: "Sign up"
-      })
+        content: <<-HTML})
+      <form action="/signup" method="POST">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password">
+      <input type="submit" value="Submit">
+      </form>
+    HTML
+  end
+
+  def post
+    response(
+      '201',
+      {
+        page_title: "Success",
+        header: "Success",
+        content: "Success"})
   end
 end
 
