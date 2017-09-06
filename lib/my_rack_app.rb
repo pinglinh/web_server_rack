@@ -1,4 +1,5 @@
 require "erb"
+require "pry"
 
 class Responder
   def response(code, vars, headers = {})
@@ -78,13 +79,17 @@ class SignupController < BaseController
   end
 
   def post
-    response(
-      '201',
-      {
-        page_title: "Success",
-        header: "Success",
-        content: "Success"})
+    rack_response = Rack::Response.new
+
+    rack_response.redirect("login")
+    # response(
+    #   '201',
+    #   {
+    #     page_title: "Success",
+    #     header: "Success",
+    #     content: "Successfully signed up! Please log in using the form below:"})
   end
+
 end
 
 class DashboardController < BaseController
