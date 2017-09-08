@@ -11,7 +11,6 @@ describe "the signup process" do
     visit "/signup"
     fill_in "Username", with: "example@email.com"
     fill_in "Password", with: "password"
-    binding.pry
     click_button "Submit"
     expect(page).to have_current_path("/login")
     expect(page).to have_content "Successfully signed up! Please log in using the form below:"
