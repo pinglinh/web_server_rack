@@ -12,8 +12,9 @@ class Responder
 end
 
 class BaseController
-  def initialize(responder)
+  def initialize(responder, env)
     @responder = responder
+    @env = env
   end
 
   def response(*args)
@@ -118,11 +119,11 @@ end
 class MyRackApp
   def call(env)
     responder = Responder.new
-    login_controller = LoginController.new(responder)
-    dashboard_controller = DashboardController.new(responder)
-    welcome_controller = WelcomeController.new(responder)
-    error_controller = ErrorController.new(responder)
-    signup_controller = SignupController.new(responder)
+    login_controller = LoginController.new(responder, env)
+    dashboard_controller = DashboardController.new(responder, env)
+    welcome_controller = WelcomeController.new(responder, env)
+    error_controller = ErrorController.new(responder, env)
+    signup_controller = SignupController.new(responder, env)
 
     routes = {
       '/' => welcome_controller,
