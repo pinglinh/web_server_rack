@@ -34,17 +34,20 @@ end
 
 class LoginController < BaseController
   def get
+    req = Rack::Request.new(@env)
+    welcome = req.params["welcome"]
     response(
       '200',
       {page_title: "Login Page",
         header: "Login",
         content: <<-HTML})
+      #{ "Successfully signed up! Please log in using the form below:" if welcome }
       <form action="/login" method="POST">
       <label for="username">Username</label>
       <input type="text" name="username" id="username">
       <label for="password">Password</label>
       <input type="password" name="password" id="password">
-      <input type="submit">
+      <input type="submit" value="Submit">
       </form>
       HTML
   end
