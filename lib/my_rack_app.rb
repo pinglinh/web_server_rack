@@ -53,14 +53,17 @@ class LoginController < BaseController
   end
 
   def post
-    response(
-      '302',
-      {
-        page_title: "Dashboard",
-        header: "Dashboard",
-        content: "hello user"
-      },
-      {"Location" => "/dashboard"})
+    rack_response = Rack::Response.new
+    rack_response.redirect("/dashboard?login=true")
+    rack_response.finish
+    # response(
+    #   '302',
+    #   {
+    #     page_title: "Dashboard",
+    #     header: "Dashboard",
+    #     content: "hello user"
+    #   },
+    #   {"Location" => "/dashboard"})
   end
 end
 
@@ -98,14 +101,15 @@ end
 
 class DashboardController < BaseController
   def get
-    response(
+    req = Rack::Request.new(@env)
+    login = req.params["login"]
+      response(
       '200',
       {
         page_title: "Dashboard",
         header: "Dashboard",
-        content: "hello user"
-      },
-      {"Location" => "/dashboard"})
+        content: "Hello user!"
+      }) if login
   end
 end
 
