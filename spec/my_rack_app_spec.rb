@@ -40,7 +40,7 @@ describe MyRackApp do
       it "takes the user to the dashboard" do
         post('/login', "username" => "hello@gmail.com", "password" => "hello1")
         follow_redirect!
-        expect(last_response.body).to include("hello user")
+        expect(last_response.body).to include("Hello user!")
       end
     end
 
