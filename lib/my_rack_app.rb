@@ -87,13 +87,14 @@ class SignupController < BaseController
 
   def post
     rack_response = Rack::Response.new
+    rack_response.redirect("/login?welcome=true")
     rack_response.finish
-    response(
-      '201',
-      {
-        page_title: "Success",
-        header: "Success",
-        content: "Successfully signed up! Please log in using the form below:"})
+    # response(
+    #   '201',
+    #   {
+    #     page_title: "Success",
+    #     header: "Success",
+    #     content: "Successfully signed up! Please log in using the form below:"})
 
   end
 
