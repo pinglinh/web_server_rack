@@ -33,6 +33,12 @@ class WelcomeController < BaseController
 end
 
 class LoginController < BaseController
+
+  def initialize(responder, env, db)
+    @db = db
+    super(responder, env)
+  end
+
   def get
     req = Rack::Request.new(@env)
     welcome = req.params["welcome"]
@@ -68,6 +74,12 @@ class LoginController < BaseController
 end
 
 class SignupController < BaseController
+
+  def initialize(responder, env, db)
+    @db = db
+    super(responder, env)
+  end
+
   def get
     response(
       '200',
@@ -123,13 +135,17 @@ class ErrorController < BaseController
 end
 
 class MyRackApp
+  def initialize(db)
+    @db = db
+  end
+
   def call(env)
     responder = Responder.new
-    login_controller = LoginController.new(responder, env)
+    login_controller = LoginController.new(responder, env, @db)
     dashboard_controller = DashboardController.new(responder, env)
     welcome_controller = WelcomeController.new(responder, env)
     error_controller = ErrorController.new(responder, env)
-    signup_controller = SignupController.new(responder, env)
+    signup_controller = SignupController.new(responder, env, @db)
 
     routes = {
       '/' => welcome_controller,
