@@ -54,7 +54,7 @@ class LoginController < BaseController
 
   def post
     rack_response = Rack::Response.new
-    rack_response.redirect("/dashboard?login=true")
+    rack_response.redirect("/dashboard")
     rack_response.finish
     # response(
     #   '302',
@@ -102,15 +102,13 @@ end
 
 class DashboardController < BaseController
   def get
-    req = Rack::Request.new(@env)
-    login = req.params["login"]
       response(
       '200',
       {
         page_title: "Dashboard",
         header: "Dashboard",
         content: "Hello user!"
-      }) if login
+      })
   end
 end
 
