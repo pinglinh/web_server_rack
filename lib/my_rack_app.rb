@@ -101,6 +101,9 @@ class SignupController < BaseController
     rack_response = Rack::Response.new
     rack_response.redirect("/login?welcome=true")
     rack_response.finish
+    req = Rack::Request.new(@env)
+    username, password = req.params.values_at("username", "password")
+    @db[:users] << {username: username, password: password}
     # response(
     #   '201',
     #   {
