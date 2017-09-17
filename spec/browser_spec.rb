@@ -2,7 +2,10 @@ require "my_rack_app"
 require "capybara/rspec"
 require "pry"
 
-Capybara.app = MyRackApp.new
+db = {
+  users: []
+}
+Capybara.app = MyRackApp.new(db)
 
 describe "the signup process" do
   include Capybara::DSL
