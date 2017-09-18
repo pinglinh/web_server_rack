@@ -10,6 +10,10 @@ Capybara.app = MyRackApp.new(db)
 describe "the signup process" do
   include Capybara::DSL
 
+  before do
+    db[:users].clear
+  end
+
   it "allows user to sign up and log in with the same credentials" do
     visit "/signup"
     fill_in "Username", with: "example@email.com"
