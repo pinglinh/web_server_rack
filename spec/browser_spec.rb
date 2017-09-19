@@ -27,4 +27,12 @@ describe "the signup process" do
     expect(page).to have_current_path("/dashboard")
     expect(page).to have_content "Hello user!"
   end
+
+  it "rejects logins from users that haven't signed up" do
+    visit "/login"
+    fill_in "Username", with: "example@email.com"
+    fill_in "Password", with: "password"
+    click_button "Submit"
+    expect(page).to have_content "Invalid credentials"
+  end
 end
