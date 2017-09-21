@@ -6,7 +6,9 @@ describe MyRackApp do
   include Rack::Test::Methods
 
   def app
-    MyRackApp.new
+    MyRackApp.new({
+      users: []
+    })
   end
 
   describe "/" do
