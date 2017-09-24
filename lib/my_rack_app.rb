@@ -20,6 +20,12 @@ class BaseController
   def response(*args)
     @responder.response(*args)
   end
+
+  def params_hash(*keys)
+    req = Rack::Request.new(@env)
+    key_select = req.params.select { |key, value| keys.include?(key) }
+    Hash[key_select.map { |key, value| [key, value] }]
+  end
 end
 
 class WelcomeController < BaseController
@@ -59,17 +65,23 @@ class LoginController < BaseController
   end
 
   def post
-    rack_response = Rack::Response.new
-    rack_response.redirect("/dashboard")
-    rack_response.finish
-    # response(
-    #   '302',
-    #   {
-    #     page_title: "Dashboard",
-    #     header: "Dashboard",
-    #     content: "hello user"
-    #   },
-    #   {"Location" => "/dashboard"})
+    credential = params_hash("username", "password")
+    user_exists = @db[:users].any? { |user| user == credential }
+
+    if user_exists
+      rack_response = Rack::Response.new
+      rack_response.redirect("/dashboard")
+      rack_response.finish
+    else
+      response(
+        '422',
+        {
+          header: "Invalid credentials",
+          page_title: "Invalid credentials",
+          content: "Invalid credentials"
+        }
+        )
+    end
   end
 end
 
@@ -98,19 +110,10 @@ class SignupController < BaseController
   end
 
   def post
+    @db[:users] << params_hash("username", "password")
     rack_response = Rack::Response.new
     rack_response.redirect("/login?welcome=true")
     rack_response.finish
-    req = Rack::Request.new(@env)
-    username, password = req.params.values_at("username", "password")
-    @db[:users] << {username: username, password: password}
-    # response(
-    #   '201',
-    #   {
-    #     page_title: "Success",
-    #     header: "Success",
-    #     content: "Successfully signed up! Please log in using the form below:"})
-
   end
 
 end
