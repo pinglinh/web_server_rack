@@ -3,4 +3,8 @@
 require_relative '../lib/my_rack_app'
 require 'rack'
 
-Rack::Handler::WEBrick.run MyRackApp.new
+db = {
+  users: []
+}
+
+Rack::Handler::WEBrick.run MyRackApp.new(db)
