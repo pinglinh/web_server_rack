@@ -69,9 +69,11 @@ class LoginController < BaseController
     user_exists = @db[:users].any? { |user| user == credential }
 
     if user_exists
+      @env['rack.session'][:logged_in] = true
       rack_response = Rack::Response.new
       rack_response.redirect("/dashboard")
       rack_response.finish
+
     else
       response(
         '422',
@@ -120,6 +122,7 @@ end
 
 class DashboardController < BaseController
   def get
+    if @env['rack.session'][:logged_in]
       response(
       '200',
       {
@@ -127,6 +130,11 @@ class DashboardController < BaseController
         header: "Dashboard",
         content: "Hello user!"
       })
+    else
+      rack_response = Rack::Response.new
+      rack_response.redirect("/login")
+      rack_response.finish
+    end
   end
 end
 
@@ -140,7 +148,13 @@ class ErrorController < BaseController
   end
 end
 
-class MyRackApp
+module MyRackApp
+  def self.new(db)
+    Rack::Session::Cookie.new(MyRackAppInternal.new(db))
+  end
+end
+
+class MyRackAppInternal
   def initialize(db)
     @db = db
   end

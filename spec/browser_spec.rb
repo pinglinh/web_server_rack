@@ -35,4 +35,9 @@ describe "the signup process" do
     click_button "Submit"
     expect(page).to have_content "Invalid credentials"
   end
+
+  it "prevents non-users from going to the dashboard" do
+    visit "/dashboard"
+    expect(page).to have_current_path("/login")
+  end
 end
